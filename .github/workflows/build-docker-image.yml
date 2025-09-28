@@ -1,5 +1,7 @@
 name: Build Docker Image
-
+permissions:
+  contents: read
+  packages: write
 on:
   workflow_call:
     inputs:
@@ -27,4 +29,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/${{ inputs.OWNER_LC }}/rocknix-build:latest
+          tags: ghcr.io/${{ inputs.OWNER_LC }}/distribution_fbneo-lr_update:latest
