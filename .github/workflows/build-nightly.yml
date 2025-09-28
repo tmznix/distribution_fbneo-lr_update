@@ -49,20 +49,20 @@ jobs:
         include:
           - device: RK3326
             project: ROCKNIX
-          - device: RK3399
-            project: ROCKNIX
-          - device: RK3566
-            project: ROCKNIX
-          - device: RK3588
-            project: ROCKNIX
-          - device: S922X
-            project: ROCKNIX
-          - device: H700
-            project: ROCKNIX
-          - device: SM8250
-            project: ROCKNIX
-          - device: SM8550
-            project: ROCKNIX
+#          - device: RK3399
+#            project: ROCKNIX
+#          - device: RK3566
+#            project: ROCKNIX
+#          - device: RK3588
+#            project: ROCKNIX
+#          - device: S922X
+#            project: ROCKNIX
+#          - device: H700
+#            project: ROCKNIX
+#          - device: SM8250
+#            project: ROCKNIX
+#          - device: SM8550
+#            project: ROCKNIX
     uses: ./.github/workflows/build-device.yml
     secrets: inherit
     with:
@@ -72,16 +72,17 @@ jobs:
       NIGHTLY: ${{ needs.set-envs.outputs.NIGHTLY }}
       OFFICIAL: ${{ needs.set-envs.outputs.OFFICIAL }}
 
-  rerun-failed-jobs:
-    if: always() && !cancelled() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) && fromJSON(github.run_attempt) < 3 && github.ref_name == 'next' && (github.event_name != 'schedule' || github.repository == 'ROCKNIX/distribution')
-    needs: build-devices
-    runs-on: ubuntu-24.04
-    steps:
-      - env:
-          GH_REPO: ${{ github.repository }}
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run retry-workflow.yml -F run_id=${{ github.run_id }}
+#  rerun-failed-jobs:
+#    if: always() && !cancelled() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) && fromJSON(github.run_attempt) < 3 && github.ref_name == 'next' && (github.event_name != 'schedule' || github.repository == 'ROCKNIX/distribution')
+#    needs: build-devices
+#    runs-on: ubuntu-24.04
+#    steps:
+#      - env:
+#          GH_REPO: ${{ github.repository }}
+#          GH_TOKEN: ${{ github.token }}
+#        run: gh workflow run retry-workflow.yml -F run_id=${{ github.run_id }}
 
+/*
   release-nightly:
      if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.repository_owner == 'ROCKNIX' && needs.set-envs.outputs.NIGHTLY == 'yes' }}
      name: Release nightly
@@ -157,7 +158,7 @@ jobs:
          for FILE in $FILES; do
            rsync -e ssh "$FILE" tiopex@frs.sourceforge.net:/home/frs/project/rocknix/nightly/${{ env.DATE }}/
          done         
-         
+
   release-official:
     if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.repository_owner == 'ROCKNIX' && needs.set-envs.outputs.OFFICIAL == 'yes' }}
     name: Release official
@@ -328,4 +329,5 @@ jobs:
           FILES=$(find . -type f \( -name "*.tar" -o -name "*.img.gz" -o -name "*.sha256" \))
           for FILE in $FILES; do
             rsync -e ssh "$FILE" tiopex@frs.sourceforge.net:/home/frs/project/rocknix/official/${{ env.DATE }}/
-          done               
+          done
+*/
